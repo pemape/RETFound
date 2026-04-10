@@ -1,0 +1,28 @@
+{
+    "name": "Python Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "runArgs": [
+        "--gpus=all"
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python"
+            },
+            "extensions": [
+                "ms-python.python"
+            ]
+        }
+    },
+    "remoteEnv": {
+        "HUGGINGFACE_TOKEN": "${localEnv:HUGGINGFACE_TOKEN}"
+    },
+    "postStartCommand": "if [ -n \"$HUGGINGFACE_TOKEN\" ]; then huggingface-cli login --token \"$HUGGINGFACE_TOKEN\"; fi",
+    "postAttachCommand": "if [ ! -d \"./RETFound\" ] || [ -z \"$(find ./RETFound -mindepth 1 -print -quit 2>/dev/null)\" ]; then huggingface-cli download YukunZhou/RETFound_mae_natureCFP --local-dir ./RETFound; fi"
+}
